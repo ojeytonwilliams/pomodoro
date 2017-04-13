@@ -1,0 +1,11 @@
+button.button-start.ready {
+  span.start-text {
+    visibility: inherit;
+  }
+}
+
+button.button-start {
+  span.start-text {
+    visibility: hidden;
+  }
+}
