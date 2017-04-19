@@ -8,9 +8,11 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" href="favicon.ico">
 
-    <title>Sample Sites</title>
+    <!-- TODO: Create favicon -->
+
+    <title>Pomodoro</title>
     <!-- TODO loading both jquery and minified version.. -->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -37,7 +39,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-                <a class="navbar-brand" href="/static/html/index.html">Sample websites</a>
+                <a class="navbar-brand" href="/static/html/index.html">Home</a>
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
@@ -59,13 +61,13 @@
 
         <div class="pomodoro">
             <div class="timer first-timer">
-              Work
+                Work
             </div>
             <div class="timer second-timer">
-              Notes
+                Notes
             </div>
             <div class="timer break-timer">
-              Break
+                Break
             </div>
         </div>
 
@@ -79,7 +81,7 @@
                 <li value="10">10 minutes</li>
                 <li value="15">15 minutes</li>
                 <li value="20">20 minutes</li>
-                <li value="25">25 minutes</li>
+                <li class="active" value="25">25 minutes</li>
                 <li value="30">30 minutes</li>
                 <li value="35">35 minutes</li>
             </ul>
@@ -94,7 +96,7 @@ How long to take notes?
                 <li value="2">2 minutes</li>
                 <li value="3">3 minutes</li>
                 <li value="4">4 minutes</li>
-                <li value="5">5 minutes</li>
+                <li class="active" value="5">5 minutes</li>
                 <li value="6">6 minutes</li>
                 <li value="7">7 minutes</li>
                 <li value="8">8 minutes</li>
@@ -109,37 +111,52 @@ How long a break?
 <span class="caret"></span>
 </button>
             <ul class="dropdown-menu" id="break-list">
-              <li value="1">1 minute</li>
-              <li value="2">2 minutes</li>
-              <li value="3">3 minutes</li>
-              <li value="4">4 minutes</li>
-              <li value="5">5 minutes</li>
-              <li value="6">6 minutes</li>
-              <li value="7">7 minutes</li>
-              <li value="8">8 minutes</li>
-              <li value="9">9 minutes</li>
-              <li value="10">10 minutes</li>
+                <li value="1">1 minute</li>
+                <li value="2">2 minutes</li>
+                <li value="3">3 minutes</li>
+                <li value="4">4 minutes</li>
+                <li class="active" value="5">5 minutes</li>
+                <li value="6">6 minutes</li>
+                <li value="7">7 minutes</li>
+                <li value="8">8 minutes</li>
+                <li value="9">9 minutes</li>
+                <li value="10">10 minutes</li>
             </ul>
         </div>
     </div>
     <div class="btn-group" role="group">
-      <button type="button" class="btn btn-default ready" id="start-button">Start</button>
-      <button type="button" class="btn btn-default" disabled id="pause-button">Pause</button>
-      <button type="button" class="btn btn-default" disabled id="resume-button">Resume</button>
-    </div><!-- /.btn-group -->
+        <button type="button" class="btn btn-default button-start ready">
+        <span class="start-text">Start</span>
+      </button>
+        <button type="button" class="btn btn-default button-pause" disabled>
+        <span class="pause-text">Pause</span>
+      </button>
+        <button type="button" class="btn btn-default button-resume" disabled>
+        <span class="resume-text">Resume</span>
+      </button>
+        <button type="button" class="btn btn-default button-reset" disabled>
+        <span class="stop-text">Reset</span>
+      </button>
+    </div>
+    <!-- /.btn-group -->
 
+    <div class="work-display time-display">
+        <span class="minutes leading-zero"></span><span class="minutes units">25:</span
+          ><span class="seconds leading-zero"></span><span class="seconds units">00</span>
+    </div>
+    <!-- /.work-display -->
 
-    <div class="work-display">
+    <div class="notes-display time-display">
+        <span class="minutes leading-zero">0</span><span class="minutes units">5:</span
+          ><span class="seconds leading-zero"></span><span class="seconds units">00</span>
+    </div>
+    <!-- /.notes-display -->
 
-    </div><!-- /.work-display -->
-
-    <div class="notes-display">
-
-    </div><!-- /.notes-display -->
-
-    <div class="break-display">
-
-    </div><!-- /.break-display -->
+    <div class="break-display time-display">
+        <span class="minutes leading-zero">0</span><span class="minutes units">5:</span
+          ><span class="seconds leading-zero"></span><span class="seconds units">00</span>
+    </div>
+    <!-- /.break-display -->
 
     <footer class="footer">
         <div class="container">
@@ -158,84 +175,7 @@ How long a break?
     <!-- <script src="../scripts/timer.js" type="text/javascript"></script>
      <script src="../scripts/pomodoro.js"></script> -->
     <script type="text/javascript" src="../js/bundle.min.js">
-
     </script>
-    <script type="text/javascript">
-      var minutesToMillis = 1000;  // TODO it's set at 1000 for debugging, but should
-      // be 60000.
-      function updateWork(remainingTime) {
-        $(".work-display").text(remainingTime);
-      }
-      function updateNotes(remainingTime) {
-        $(".notes-display").text(remainingTime);
-      }
-      function updateBreak(remainingTime) {
-        $(".break-display").text(remainingTime);
-      }
-
-      function disable(elem) {
-        elem.removeClass('ready').prop("disabled", true);
-      }
-
-      function enable(elem) {
-        elem.addClass('ready').prop("disabled", false);
-      }
-
-      function toggle(elem) {
-        elem.toggleClass('ready').prop("disabled", (i, val) => {return !val});
-      }
-
-      $("#start-button").click(function () {
-        pomodoroOne.startWorking();
-        enable($("#pause-button"));
-        disable($("#resume-button"));
-      })
-
-      $("#pause-button").click(function () {
-        pomodoroOne.pause();
-        toggle($(this));
-        enable($("#resume-button"));
-      })
-
-      $("#resume-button").click(function () {
-        pomodoroOne.resume();
-        toggle($(this));
-        enable($("#pause-button"));
-      })
-
-      var pomodoroOne = createPomodoro();
-
-       $('#work-list > li').click(function () {
-          pomodoroOne.setTime($(this).val() * minutesToMillis, 0);
-        });
-
-        $('#notes-list > li').click(function () {
-          pomodoroOne.setTime($(this).val() * minutesToMillis, 1);
-        });
-
-        $('#break-list > li').click(function () {
-          pomodoroOne.setTime($(this).val() * minutesToMillis, 2);
-        });
-
-        function createPomodoro() {
-            var pomodoroDOM = $(".pomodoro");
-            var first = 20 * minutesToMillis  // = Number(timings.find("input.set-first").val());
-            var second = 5 * minutesToMillis //Number(timings.find("input.set-second").val());
-            var breakTime = 5 * minutesToMillis //Number(timings.find("input.set-break").val());
-            var out = pomodoro.create(first, second, breakTime, pomodoroDOM);
-            var workAudio = new Audio("../assets/audio/250629__kwahmah-02__alarm1.mp3");
-            var notesAudio = new Audio("../assets/audio/250629__kwahmah-02__alarm1.mp3");
-            var breakAudio = new Audio("../assets/audio/250629__kwahmah-02__alarm1.mp3");
-            workAudio.volume = 0.05;
-            notesAudio.volume = 0.05;
-            breakAudio.volume = 0.05;
-            out.setWorkTimer(updateWork, workAudio);
-            out.setNotesTimer(updateNotes, notesAudio);
-            out.setBreakTimer(updateBreak, breakAudio);
-            return out;
-        }
-    </script>
-
     <!-- Latest compiled and minified JavaScript -->
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>

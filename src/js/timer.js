@@ -8,24 +8,20 @@ function Timer(updateDisplay, audio, reportTimes) {
     this.startTime = null;
     this.paused = false;
 
-    var finishTimingBound = finishTiming.bind(this);
 
     // update every tenth of a second.
     var delta = 100;
 
-    // TODO make this private.
-    this.updateTimer = function(endTime) {
-        var hours, minutes, seconds, remainingTime;
-
+    var updateTimer = (endTime) => {
         this.duration = endTime - Date.now();
 
         if (this.duration <= 0) {
-            finishTimingBound();
+            finishTiming();
         }
         this.updateDisplay(this.duration);
     };
 
-    function finishTiming() {
+    var finishTiming = () => {
         this.audio.play();
         this.duration = 0;
         clearInterval(this.timerId);
@@ -38,37 +34,50 @@ function Timer(updateDisplay, audio, reportTimes) {
         if(reportTimes && typeof reportTimes === "function") {
           reportTimes(this.desiredDuration, millisPaused);
         }
-    }
+    };
 
 
 
     this.prepare = function prepare(duration) {
+      window.console.log("Preparing with duration: " + duration );
         if (!Number(duration)) throw new Error("Malformed time input.  Please enter a number");
         this.desiredDuration = duration;
         this.duration = duration; // If the timer has a non-zero duration it is
         // ready to go.
-    }
+        return this;
+    };
+
+    this.toggle = function toggle() {
+      if (this.timerId === null) {
+        commenceTicking();
+      } else {
+        this.stop();
+      }
+    };
 
     this.start = function start() {
         this.startTime = Date.now();
-        commenceTicking.bind(this)();
+        window.console.log("Starting with startTime: " + this.startTime);
+        commenceTicking();
     };
 
 
-    function commenceTicking() {
+    var commenceTicking = () => {
+      window.console.log("Commencing ticking with time: " + this.duration);
         if (this.duration > 0) { // The timer is in the ready state and can be
             // toggled between paused and running
             if (this.timerId === null) { // The timer is not running and should
                 // be started
                 if (!Number(this.duration)) throw new Error("Malformed time input.  Please enter a number");
-                this.timerId = setInterval(this.updateTimer.bind(this), delta, Date.now() + Number(this.duration));
+                window.console.log("Setting up interval!");
+                this.timerId = setInterval(updateTimer, delta, Date.now() + Number(this.duration));
             } // It is already running.
         } // If it's not ready then nothing happens.
-    }
+    };
 
     this.resume = function resume() {
-        commenceTicking.bind(this)();
-    }
+        commenceTicking();
+    };
 
 
     this.stop = function stop() {
@@ -79,10 +88,3 @@ function Timer(updateDisplay, audio, reportTimes) {
         this.timerId = null;
     };
 }
-
-/*var timer = new Timer("an id");
-timer.startTimer(Date.now() + 5210);
-var timerTwo = new Timer("timer TWO!!");
-timerTwo.startTimer(Date.now() + 11000);
-
-timer.startTimer(Date.now() + 15210); */

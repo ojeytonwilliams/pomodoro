@@ -1,11 +1,17 @@
-button.button-start.ready {
-  span.start-text {
-    visibility: inherit;
-  }
+button.ready {
+  display: inherit;
 }
 
-button.button-start {
-  span.start-text {
-    visibility: hidden;
+button[disabled].button-start, .button-pause, .button-resume {
+  display: none;
+}
+
+button.button-start, .button-pause, .button-resume {
+  width: 80px;
+}
+
+.time-display {
+  .zero {
+    opacity: 0.5
   }
 }

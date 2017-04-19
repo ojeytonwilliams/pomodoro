@@ -1,6 +1,6 @@
 var utils = (function (){
   "use strict";
-  var obj = {};
+  var module = {};
 
   // This assumes array is shuffled and swaps the elements of xs into array such that array remains shuffled.
   // i.e. had the array contained xs as its starting elements, and then been shuffled, this is what you'd get.
@@ -60,10 +60,10 @@ var utils = (function (){
       }
       return c;
     }
-  obj.percentage = percentage;
-  obj.hyperGeo = hyperGeo;
-  obj.binomial = binomial;
-  obj.shuffle = shuffle;
-  obj.shuffleInto = shuffleInto;
-  return obj;
+  module.percentage = percentage;
+  module.hyperGeo = hyperGeo;
+  module.binomial = binomial;
+  module.shuffle = shuffle;
+  module.shuffleInto = shuffleInto;
+  return module;
 }());

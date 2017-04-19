@@ -51,7 +51,8 @@ gulp.task('serve', ['reload-all'], function() {
 
 function jshintHelper() {
    return gulp.src('src/js/**/*.js')
-      .pipe(jshint())
+      .pipe(jshint({esversion: 6}))  // Since we're running the js through babel
+      // we don't need to worry about compatibility.
       .pipe(jshint.reporter('jshint-stylish'));
 }
 
@@ -130,8 +131,12 @@ gulp.task('reload-js', ['build-js'], function () {
 
 // Bundle up and minify the javascript, including sourcemaps so that
 // dev-tools can point you to the right js file.
+
+// Since the project is relatively simple, I've not made use of requirejs (yet)
+// The dependency management is straightforward - some files depend on the helpers
+// so we must load the helpers first.
 gulp.task('build-js', ['clean-js'], function () {
-    return gulp.src('src/js/**/*.js')
+   return gulp.src(['src/js/helpers/**/*.js','src/js/**/*.js'])
        .pipe(sourcemaps.init())
        .pipe(concat('bundle.min.js'))
         // uglify cannot cope with es6 js, so we use babel to convert it first.
@@ -142,7 +147,7 @@ gulp.task('build-js', ['clean-js'], function () {
         //.pipe(gutil.env.type === 'production' ? uglify() : gutil.noop())
         .pipe(uglify({
             compress: {
-                pure_funcs: ['console.log'] // Tells uglify that console.log has
+                pure_funcs: ['console.log', 'window.console.log'] // Tells uglify that console.log has
                 // no side-effects and, since its result is never used, can be
                 // safely deleted.
             }
