@@ -1,27 +1,38 @@
 {
-  "name": "node-js-getting-started",
-  "version": "0.2.5",
-  "description": "A sample Node.js app using Express 4",
+  "name": "pomodoro",
+  "version": "0.0.1",
+  "description": "Flexible pomodoro timer.",
   "engines": {
-    "node": "5.9.1"
+    "node": "^7.9.0"
   },
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "nodemon ./server/bin/www",
+    "devstart": "DEBUG=pomodoro:server,app:* nodemon ./server/bin/www",
+    "test": "mocha test/**/* test/*"
   },
   "dependencies": {
-    "pg": "4.x",
+    "body-parser": "^1.17.1",
+    "chai": "^3.5.0",
+    "compression": "^1.6.2",
+    "cookie-parser": "^1.4.3",
     "cool-ascii-faces": "1.3.4",
     "ejs": "2.4.1",
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "express-session": "^1.15.2",
+    "express-validator": "^3.2.0",
+    "helmet": "^3.5.0",
+    "morgan": "^1.8.1",
+    "pg": "4.x",
+    "serve-favicon": "^2.4.2",
+    "sinon": "^2.2.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-getting-started"
+    "url": "https://github.com/ojeytonwilliams/pomodoro"
   },
   "keywords": [
     "node",
-    "heroku",
     "express"
   ],
   "license": "MIT",
@@ -45,6 +56,9 @@
     "jshint": "^2.9.4",
     "jshint-stylish": "^2.2.1",
     "merge-stream": "^1.0.1",
-    "pump": "^1.0.2"
+    "node-mocks-http": "^1.6.1",
+    "pump": "^1.0.2",
+    "supertest": "^3.0.0",
+    "tape": "^4.6.3"
   }
 }
